@@ -7,22 +7,22 @@ import java.util.ArrayList;
 
 import Model.sinhvien;
 
-public class sinhvienDAO implements DAOInterface<sinhvien>{
+public class sinhvienDAO implements DAOInterface<sinhvien> {
 
 	@Override
 	public ArrayList<sinhvien> selectAll() {
-		ArrayList< sinhvien> arrayList = new ArrayList<sinhvien>();
+		ArrayList<sinhvien> arrayList = new ArrayList<sinhvien>();
 		try {
 			Connection con = JDBCUtil.getConnection();
 			String sql = "select * from sinhvien";
 			PreparedStatement pstm = con.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				int id = rs.getInt("id");
-				String name= rs.getString("name");
-				String diaChi= rs.getString("diaChi");
-				String tenLop= rs.getString("tenLop");
-				String namSinh= rs.getString("namSinh");
+				String name = rs.getString("name");
+				String diaChi = rs.getString("diaChi");
+				String tenLop = rs.getString("tenLop");
+				String namSinh = rs.getString("namSinh");
 				sinhvien sinhvien = new sinhvien(id, name, diaChi, tenLop, namSinh);
 				arrayList.add(sinhvien);
 
@@ -36,19 +36,19 @@ public class sinhvienDAO implements DAOInterface<sinhvien>{
 
 	@Override
 	public sinhvien selectByID(int id) {
-		sinhvien sinhvien=null;
+		sinhvien sinhvien = null;
 		try {
 			Connection con = JDBCUtil.getConnection();
-			String sql="selct * from sinhvien where id=?";
+			String sql = "select * from sinhvien where id=?";
 			PreparedStatement pstm = con.prepareStatement(sql);
 			pstm.setInt(1, id);
 			ResultSet rs = pstm.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				int id_ = rs.getInt("id");
-				String name= rs.getString("name");
-				String diaChi= rs.getString("diaChi");
-				String tenLop= rs.getString("tenLop");
-				String namSinh= rs.getString("namSinh");
+				String name = rs.getString("name");
+				String diaChi = rs.getString("diaChi");
+				String tenLop = rs.getString("tenLop");
+				String namSinh = rs.getString("namSinh");
 				sinhvien = new sinhvien(id, name, diaChi, tenLop, namSinh);
 				break;
 			}
@@ -67,7 +67,17 @@ public class sinhvienDAO implements DAOInterface<sinhvien>{
 
 	@Override
 	public int delete(sinhvien t) {
-		// TODO Auto-generated method stub
+		try {
+			Connection con = JDBCUtil.getConnection();
+			String sql = "delete from sinhvien where id=?";
+			PreparedStatement pstm = con.prepareStatement(sql);
+			pstm.setInt(1, t.getId());
+			int kq = pstm.executeUpdate();
+			JDBCUtil.closeConnnection(con, pstm, null);
+			return kq;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
